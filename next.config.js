@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
+  output: 'export',
+  trailingSlash: true,
   images: {
-    domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com'],
+    unoptimized: true,
+    domains: ['lh3.googleusercontent.com', 'firebasestorage.googleapis.com', 'images.unsplash.com'],
   },
   webpack: (config) => {
     config.resolve.fallback = {
@@ -14,6 +14,9 @@ const nextConfig = {
       tls: false,
     };
     return config;
+  },
+  env: {
+    CUSTOM_KEY: 'portfolio-demo',
   },
 };
 
