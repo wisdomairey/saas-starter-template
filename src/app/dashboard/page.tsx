@@ -116,42 +116,44 @@ export default function DashboardPage() {
       
       <div className="lg:pl-64">
         {/* Top bar */}
-        <div className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500"
-              >
-                <Bars3Icon className="h-6 w-6" />
-              </button>
-              <h1 className="ml-2 lg:ml-0 text-2xl font-semibold text-gray-900">
-                FlowLaunch Dashboard
-              </h1>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              {customUser?.subscription?.status === 'active' ? (
+        <div className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200">
+          <div className="px-4 py-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
                 <button
-                  onClick={handleManageBilling}
-                  className="btn btn-outline btn-sm"
+                  onClick={() => setSidebarOpen(true)}
+                  className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 -ml-2"
                 >
-                  Manage Billing
+                  <Bars3Icon className="h-6 w-6" />
                 </button>
-              ) : (
-                <button
-                  onClick={handleUpgrade}
-                  className="btn btn-primary btn-sm"
-                >
-                  Upgrade Plan
-                </button>
-              )}
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  FlowLaunch Dashboard
+                </h1>
+              </div>
+              
+              <div className="flex items-center space-x-4">
+                {customUser?.subscription?.status === 'active' ? (
+                  <button
+                    onClick={handleManageBilling}
+                    className="inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  >
+                    Manage Billing
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleUpgrade}
+                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  >
+                    Upgrade Plan
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Main content */}
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="px-4 py-6 sm:px-6 lg:px-8">
           {/* Welcome section */}
           <div className="mb-8">
             <h2 className="text-lg font-medium text-gray-900 mb-1">

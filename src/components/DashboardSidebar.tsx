@@ -49,11 +49,11 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 z-30 w-64 h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
+        className={`fixed top-0 left-0 z-30 w-64 h-full bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
           <Link href="/" className="text-xl font-bold text-primary-600">
             FlowLaunch
           </Link>
@@ -68,15 +68,19 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
           </button>
         </div>
 
-        <nav className="mt-8 px-4">
-          <ul className="space-y-2">
+        <nav className="mt-6 px-4">
+          <ul className="space-y-1">
             {navigation.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className={`sidebar-link ${isActive ? 'sidebar-link-active' : ''}`}
+                    className={`group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 ${
+                      isActive 
+                        ? 'bg-primary-100 text-primary-700 border-r-2 border-primary-700' 
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    }`}
                     onClick={onClose}
                   >
                     <item.icon className="h-5 w-5" />
