@@ -27,7 +27,7 @@ if (hasValidCredentials) {
     adminApp = getApps().length === 0 ? initializeApp(firebaseAdminConfig, 'admin') : getApps()[0];
     adminAuth = getAuth(adminApp);
     adminDb = getFirestore(adminApp);
-  } catch (_error) {
+  } catch {
     console.warn('Firebase Admin initialization failed - running in demo mode');
   }
 }

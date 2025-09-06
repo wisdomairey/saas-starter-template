@@ -11,6 +11,11 @@ export async function GET(request: NextRequest) {
     }
 
     const token = authorization.split('Bearer ')[1];
+    
+    if (!adminAuth) {
+      return NextResponse.json({ error: 'Authentication service unavailable' }, { status: 503 });
+    }
+    
     const decodedToken = await adminAuth.verifyIdToken(token);
     
     await connectToDatabase();
@@ -47,6 +52,11 @@ export async function POST(request: NextRequest) {
     }
 
     const token = authorization.split('Bearer ')[1];
+    
+    if (!adminAuth) {
+      return NextResponse.json({ error: 'Authentication service unavailable' }, { status: 503 });
+    }
+    
     const decodedToken = await adminAuth.verifyIdToken(token);
     
     const body = await request.json();
@@ -100,6 +110,11 @@ export async function PUT(request: NextRequest) {
     }
 
     const token = authorization.split('Bearer ')[1];
+    
+    if (!adminAuth) {
+      return NextResponse.json({ error: 'Authentication service unavailable' }, { status: 503 });
+    }
+    
     const decodedToken = await adminAuth.verifyIdToken(token);
     
     const body = await request.json();

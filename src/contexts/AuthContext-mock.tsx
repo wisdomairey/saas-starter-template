@@ -52,18 +52,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     email: 'demo@flowlaunch.com',
     displayName: 'Demo User',
     photoURL: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    stripeCustomerId: 'cus_demo123',
     subscription: {
+      id: 'sub_demo123',
       status: 'active',
       priceId: 'price_demo_monthly',
-      customerId: 'cus_demo123',
       currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+      cancelAtPeriodEnd: false,
     },
-    role: 'user'
   };
 
-  const signIn = async (email: string, password: string): Promise<void> => {
+  const signIn = async (_email: string, _password: string): Promise<void> => {
     setLoading(true);
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));

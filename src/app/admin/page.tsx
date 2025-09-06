@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
@@ -22,31 +22,31 @@ export default function AdminPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Mock data for demonstration since we haven't implemented the admin API
-  const mockUsers: AdminUser[] = [
-    {
-      uid: '1',
-      email: 'john@example.com',
-      displayName: 'John Doe',
-      createdAt: '2024-01-15',
-      subscription: { status: 'active', priceId: 'price_monthly' }
-    },
-    {
-      uid: '2',
-      email: 'jane@example.com',
-      displayName: 'Jane Smith',
-      createdAt: '2024-01-20',
-      subscription: { status: 'canceled', priceId: 'price_monthly' }
-    },
-    {
-      uid: '3',
-      email: 'bob@example.com',
-      displayName: 'Bob Johnson',
-      createdAt: '2024-01-25',
-    }
-  ];
-
   const fetchUsers = useCallback(async () => {
+    // Mock data for demonstration since we haven't implemented the admin API
+    const mockUsers: AdminUser[] = [
+      {
+        uid: '1',
+        email: 'john@example.com',
+        displayName: 'John Doe',
+        createdAt: '2024-01-15',
+        subscription: { status: 'active', priceId: 'price_monthly' }
+      },
+      {
+        uid: '2',
+        email: 'jane@example.com',
+        displayName: 'Jane Smith',
+        createdAt: '2024-01-20',
+        subscription: { status: 'canceled', priceId: 'price_monthly' }
+      },
+      {
+        uid: '3',
+        email: 'bob@example.com',
+        displayName: 'Bob Johnson',
+        createdAt: '2024-01-25',
+      }
+    ];
+
     try {
       if (user) {
         // Note: In a real application, you'd want to check if the user has admin permissions
@@ -76,7 +76,7 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  }, [user, mockUsers]);
+  }, [user]);
 
   useEffect(() => {
     fetchUsers();
@@ -128,7 +128,7 @@ export default function AdminPage() {
                       Total Users
                     </dt>
                     <dd className="text-lg font-medium text-gray-900">
-                      {mockUsers.length}
+                      {users.length}
                     </dd>
                   </dl>
                 </div>
