@@ -2,7 +2,6 @@
 
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '@/contexts/AuthContext';
-import Link from 'next/link';
 
 const plans = [
   {
@@ -144,13 +143,13 @@ export default function Pricing() {
               </ul>
 
               <button
-                onClick={() => handleUpgrade(plan.stripePriceId)}
+                onClick={() => plan.stripePriceId && handleUpgrade(plan.stripePriceId)}
+                disabled={!plan.stripePriceId && plan.price > 0}
                 className={`w-full btn btn-lg ${
                   plan.popular
                     ? 'btn-primary'
                     : 'btn-outline'
-                }`}
-                disabled={!plan.stripePriceId && plan.price > 0}
+                } ${!plan.stripePriceId && plan.price > 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {plan.price === 0 ? 'Get Started Free' : 'Upgrade Now'}
               </button>

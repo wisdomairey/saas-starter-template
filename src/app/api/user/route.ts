@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     const decodedToken = await adminAuth.verifyIdToken(token);
     
     const body = await request.json();
-    const { uid, email, displayName, photoURL } = body;
+    const { email, displayName, photoURL } = body;
 
     await connectToDatabase();
     

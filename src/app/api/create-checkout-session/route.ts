@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     await connectToDatabase();
     
-    let user = await User.findOne({ uid: decodedToken.uid });
+    const user = await User.findOne({ uid: decodedToken.uid });
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }

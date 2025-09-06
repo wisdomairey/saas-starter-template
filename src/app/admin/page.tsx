@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { Bars3Icon, UserIcon } from '@heroicons/react/24/outline';
@@ -21,33 +21,6 @@ export default function AdminPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
-    try {
-      if (user) {
-        // Note: In a real application, you'd want to check if the user has admin permissions
-        // This is a simplified version for demonstration
-        const response = await fetch('/api/admin/users', {
-          headers: {
-            Authorization: `Bearer ${await user.getIdToken()}`,
-          },
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          setUsers(data.users || []);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Mock data for demonstration since we haven't implemented the admin API
   const mockUsers: AdminUser[] = [
@@ -72,6 +45,42 @@ export default function AdminPage() {
       createdAt: '2024-01-25',
     }
   ];
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      if (user) {
+        // Note: In a real application, you'd want to check if the user has admin permissions
+        // This is a simplified version for demonstration
+        const response = await fetch('/api/admin/users', {
+          headers: {
+            'Authorization': `Bearer ${await user.getIdToken()}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUsers(data.users || []);
+        } else {
+          // Fallback to mock data if API not available
+          setUsers(mockUsers);
+        }
+      } else {
+        // Use mock data if not logged in
+        setUsers(mockUsers);
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      // Fallback to mock data on error
+      setUsers(mockUsers);
+    } finally {
+      setLoading(false);
+    }
+  }, [user, mockUsers]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -137,7 +146,7 @@ export default function AdminPage() {
                       Active Subscriptions
                     </dt>
                     <dd className="text-lg font-medium text-gray-900">
-                      {mockUsers.filter(u => u.subscription?.status === 'active').length}
+                      {users.filter(u => u.subscription?.status === 'active').length}
                     </dd>
                   </dl>
                 </div>
@@ -155,7 +164,7 @@ export default function AdminPage() {
                       Free Users
                     </dt>
                     <dd className="text-lg font-medium text-gray-900">
-                      {mockUsers.filter(u => !u.subscription).length}
+                      {users.filter(u => !u.subscription || u.subscription.status !== 'active').length}
                     </dd>
                   </dl>
                 </div>
@@ -187,7 +196,20 @@ export default function AdminPage() {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {mockUsers.map((user) => (
+                  {loading ? (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                        Loading users...
+                      </td>
+                    </tr>
+                  ) : users.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                        No users found. Using demo data.
+                      </td>
+                    </tr>
+                  ) : (
+                    users.map((user) => (
                     <tr key={user.uid}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
@@ -230,7 +252,8 @@ export default function AdminPage() {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

@@ -1,6 +1,6 @@
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
+import { getAuth, Auth } from 'firebase-admin/auth';
+import { getFirestore, Firestore } from 'firebase-admin/firestore';
 
 // Check if we have valid Firebase Admin credentials
 const hasValidCredentials = 
@@ -9,9 +9,9 @@ const hasValidCredentials =
   process.env.FIREBASE_ADMIN_PRIVATE_KEY &&
   process.env.FIREBASE_ADMIN_PRIVATE_KEY !== 'demo-key';
 
-let adminApp: any = null;
-let adminAuth: any = null;
-let adminDb: any = null;
+let adminApp: App | null = null;
+let adminAuth: Auth | null = null;
+let adminDb: Firestore | null = null;
 
 if (hasValidCredentials) {
   try {
@@ -27,7 +27,7 @@ if (hasValidCredentials) {
     adminApp = getApps().length === 0 ? initializeApp(firebaseAdminConfig, 'admin') : getApps()[0];
     adminAuth = getAuth(adminApp);
     adminDb = getFirestore(adminApp);
-  } catch (error) {
+  } catch (_error) {
     console.warn('Firebase Admin initialization failed - running in demo mode');
   }
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -97,10 +98,12 @@ export default function DashboardSidebar({ isOpen, onClose }: DashboardSidebarPr
           <div className="flex items-center space-x-3 mb-4">
             <div className="flex-shrink-0">
               {user?.photoURL ? (
-                <img
+                <Image
                   className="h-8 w-8 rounded-full"
                   src={user.photoURL}
                   alt={user.displayName || user.email || ''}
+                  width={32}
+                  height={32}
                 />
               ) : (
                 <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">

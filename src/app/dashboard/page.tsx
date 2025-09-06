@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import { 
@@ -27,11 +27,7 @@ export default function DashboardPage() {
   });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       if (user) {
         const response = await fetch('/api/usage-stats', {
@@ -50,7 +46,11 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   const handleUpgrade = async () => {
     try {
@@ -160,7 +160,7 @@ export default function DashboardPage() {
               Welcome back, {user?.displayName || user?.email}!
             </h2>
             <p className="text-gray-600">
-              Here's an overview of your account activity.
+              Here&apos;s an overview of your account activity.
             </p>
           </div>
 

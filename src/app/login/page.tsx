@@ -24,8 +24,8 @@ export default function LoginPage() {
     try {
       await signIn(email, password);
       router.push('/dashboard');
-    } catch (error: any) {
-      setError(error.message || 'Failed to sign in');
+    } catch (error: unknown) {
+      setError((error as Error).message || 'Failed to sign in');
     } finally {
       setLoading(false);
     }
@@ -38,8 +38,8 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
       router.push('/dashboard');
-    } catch (error: any) {
-      setError(error.message || 'Failed to sign in with Google');
+    } catch (error: unknown) {
+      setError((error as Error).message || 'Failed to sign in with Google');
     } finally {
       setLoading(false);
     }
