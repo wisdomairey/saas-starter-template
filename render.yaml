@@ -1,0 +1,11 @@
+services:
+  - type: static
+    name: flowlaunch
+    env: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: out
+    pullRequestPreviewsEnabled: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
